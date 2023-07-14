@@ -8,7 +8,6 @@ import org.bson.types.ObjectId
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestBody
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -33,16 +32,14 @@ data class UserServiceImpl (
             .map { UserMapperManual().toDto(it) }
     }
 
-    fun deleteUser(userId: ObjectId): Mono<Void> {
+    fun deleteUser(userId: ObjectId): Mono<Unit> {
     return userRepository.deleteById(userId)
         .switchIfEmpty(Mono.error(NotFoundException()))
     }
 
-    fun updateUser(userId: ObjectId, @RequestBody userDto:UserDto): Mono<UserModel> {
+    fun updateUser(userId: ObjectId, userDto:UserDto): Mono<UserModel> {
         return userRepository.findById(userId)
-            .switchIfEmpty(Mono.error(NotFoundException()))
-            .map { UserMapperManual().toDto(it) }
-            .map { UserMapperManual().toModel(it) }
+            .map { UserMapperManual().toModel(userDto) }
             .flatMap { userRepository.save(it) }
     }
 

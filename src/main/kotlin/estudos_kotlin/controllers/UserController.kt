@@ -4,6 +4,7 @@ import estudos_kotlin.dtos.UserDto
 import estudos_kotlin.models.UserModel
 import estudos_kotlin.services.UserServiceImpl
 import org.bson.types.ObjectId
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -31,7 +32,8 @@ class UserController(
     }
 
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id: ObjectId): Mono<Void> {
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    fun deleteUser(@PathVariable id: ObjectId): Mono<Unit> {
         return userService.deleteUser(id)
             .switchIfEmpty(Mono.error(Exception()))
     }

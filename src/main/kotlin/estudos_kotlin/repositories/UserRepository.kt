@@ -9,5 +9,5 @@ import reactor.core.publisher.Mono
 @Repository
 interface UserRepository: ReactiveMongoRepository<UserModel, Long> {
     fun findById(userId: ObjectId): Mono<UserModel>
-    fun deleteById(userId: ObjectId): Mono<Void>
+    fun deleteById(userId: ObjectId): Mono<Unit>
 }

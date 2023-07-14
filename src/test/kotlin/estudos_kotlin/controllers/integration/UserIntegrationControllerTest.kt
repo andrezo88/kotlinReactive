@@ -1,10 +1,11 @@
-package estudos_kotlin.controllers
+package estudos_kotlin.controllers.integration
 
 import estudos_kotlin.dtos.UserDto
 import estudos_kotlin.models.UserModel
 import estudos_kotlin.repositories.UserRepository
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -25,14 +26,13 @@ class UserIntegrationControllerTest @Autowired constructor(
 ) {
 
     val BASE_URL = "/v1/users"
-
     @BeforeEach
     fun setup() {
         val users = listOf(
             UserModel(null, "Carolina Kunz", "carol.kunz@gbele.com.br"),
             UserModel(null, "Pedro Henrique", "pedro@henrique.com"),
             UserModel(null, "Gustavo Moreira", "gus.silva@moreira.com"),
-            UserModel(null, "Gilmar Kunz", "gilma@gaucho.com"))
+            UserModel(ObjectId("64ad8e2204a52f3dafb51838"), "Gilmar Kunz", "gilma@gaucho.com"))
 
         userRepository.saveAll(users)
             .then()
@@ -70,6 +70,7 @@ class UserIntegrationControllerTest @Autowired constructor(
 
     @Test
     fun findAllUsers() {
+
         webTestClient.get()
             .uri(BASE_URL)
             .exchange()
@@ -77,18 +78,54 @@ class UserIntegrationControllerTest @Autowired constructor(
             .is2xxSuccessful()
             .expectBodyList(UserDto::class.java)
             .hasSize(4)
-    }
 
-//    @Test
-//    fun findUserById() {
-//        val userById = UserModel(ObjectId("1"),"pedrim do batuque", "batuque@coisalinda.com")
-//    }
+    }
 
     @Test
-    fun deleteUser() {
+    fun findUserById(){
+        val id = ObjectId("64ad8e2204a52f3dafb51838")
+
+        webTestClient.get()
+            .uri("/v1/users/{id}" , id)
+            .exchange()
+            .expectStatus()
+            .is2xxSuccessful
+            .expectBody(UserDto::class.java)
     }
+
+    //verificar depois
+/*    @Test
+    fun deleteUser(){
+        val id = ObjectId("64ad8e2204a52f3dafb51838")
+
+        webTestClient.delete()
+            .uri("/v1/users/{id}" , id)
+            .exchange()
+            .expectStatus()
+            .isOk
+
+    }*/
 
     @Test
     fun updateUser() {
+        val id = ObjectId("64ad8e2204a52f3dafb51838")
+        val userInfo = UserDto(ObjectId("64ad8e2204a52f3dafb51838"), "Andrezim", "andre@andre.com.br")
+
+        webTestClient
+            .put()
+            .uri("/v1/users/{id}" , id)
+            .bodyValue(userInfo)
+            .exchange()
+            .expectStatus()
+            .is2xxSuccessful
+            .expectBody(UserDto::class.java)
+            .consumeWith{userInfoExchangeResult ->
+                run {
+                    var updatedUser = userInfoExchangeResult.responseBody
+                    assert(updatedUser!=null);
+                    assertEquals("andre@andre.com.br", updatedUser!!.email)
+                }
+            }
     }
+
 }
