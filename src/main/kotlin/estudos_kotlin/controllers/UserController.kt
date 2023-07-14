@@ -15,7 +15,7 @@ class UserController(
     private val userService: UserServiceImpl
 ) {
     @PostMapping
-    @ResponseStatus(code = org.springframework.http.HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
     fun createUser(@RequestBody userDto: UserDto): Mono<UserModel> {
         return userService.createUser(userDto)
     }

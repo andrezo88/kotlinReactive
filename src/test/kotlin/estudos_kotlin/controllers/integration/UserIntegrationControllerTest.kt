@@ -5,11 +5,9 @@ import estudos_kotlin.models.UserModel
 import estudos_kotlin.repositories.UserRepository
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient
 import org.springframework.boot.test.context.SpringBootTest
@@ -121,8 +119,8 @@ class UserIntegrationControllerTest @Autowired constructor(
             .expectBody(UserDto::class.java)
             .consumeWith{userInfoExchangeResult ->
                 run {
-                    var updatedUser = userInfoExchangeResult.responseBody
-                    assert(updatedUser!=null);
+                    val updatedUser = userInfoExchangeResult.responseBody
+                    assert(updatedUser!=null)
                     assertEquals("andre@andre.com.br", updatedUser!!.email)
                 }
             }

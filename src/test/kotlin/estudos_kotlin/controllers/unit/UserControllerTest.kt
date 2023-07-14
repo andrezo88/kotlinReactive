@@ -7,10 +7,7 @@ import estudos_kotlin.services.UserServiceImpl
 import io.github.benas.randombeans.api.EnhancedRandom
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import org.mockito.BDDMockito.given
-import org.mockito.BDDMockito.isA
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -98,8 +95,8 @@ class UserControllerTest {
             .expectBody(UserDto::class.java)
             .consumeWith { userInfoExchangeResult ->
                 run {
-                    var updatedUser = userInfoExchangeResult.responseBody
-                    assert(updatedUser != null);
+                    val updatedUser = userInfoExchangeResult.responseBody
+                    assert(updatedUser != null)
                     assertEquals("andre@andre.com", updatedUser!!.email)
                 }
             }

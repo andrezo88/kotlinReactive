@@ -4,19 +4,14 @@ import estudos_kotlin.dtos.UserDto
 import estudos_kotlin.mappers.UserMapperManual
 import estudos_kotlin.models.UserModel
 import estudos_kotlin.repositories.UserRepository
-import io.github.benas.randombeans.api.EnhancedRandom
 import io.github.benas.randombeans.api.EnhancedRandom.random
 import org.bson.types.ObjectId
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.*
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Spy
 import org.mockito.junit.jupiter.MockitoExtension

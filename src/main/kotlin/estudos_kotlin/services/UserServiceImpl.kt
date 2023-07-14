@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono
 @Service
 @Component
 data class UserServiceImpl (
-    private final val userRepository: UserRepository,
+    private val userRepository: UserRepository,
 
 ) {
     fun createUser(userDto: UserDto): Mono<UserModel> {
